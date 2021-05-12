@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-class DashboardCell extends StatefulWidget {
-  String _title;
+class DashboardCell extends StatelessWidget {
+  final String _title;
 
   DashboardCell(String this._title);
 
-  @override
-  State<StatefulWidget> createState() {
-    return DashboardCellState();
-  }
-}
-
-class DashboardCellState extends State<DashboardCell> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -20,13 +12,40 @@ class DashboardCellState extends State<DashboardCell> {
         decoration: BoxDecoration(
           border: Border.all(
             width: 1,
-            color: Colors.red,
+            //color: Colors.red,
           ),
         ),
-        child: Text(
-          widget._title,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              _title,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Expanded(
+              child: Container(
+                /*
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: Colors.red,
+                  ),
+                ),
+                 */
+                child: Text(
+                  '100',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Text(
+              'km/h',
+              textAlign: TextAlign.center,
+              //style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
       ),
     );

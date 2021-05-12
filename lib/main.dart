@@ -13,6 +13,14 @@ class MyApp extends StatelessWidget {
       title: 'Bikemeter',
       home: PlatformScaffold(
         appBar: PlatformAppBar(
+          trailingActions: [
+            Icon(
+              Icons.play_arrow,
+              //color: Colors.pink,
+              size: 24.0,
+              semanticLabel: 'Start recording',
+            ),
+          ],
           title: Text('Bikemeter'),
         ),
         body: SafeArea(
