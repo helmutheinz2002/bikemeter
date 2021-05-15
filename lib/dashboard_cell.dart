@@ -7,7 +7,8 @@ class DashboardCell extends StatefulWidget {
   DashboardCell(this._title, this._initialValue);
 
   @override
-  _DashboardCellState createState() => _DashboardCellState(_title, _initialValue);
+  _DashboardCellState createState() =>
+      _DashboardCellState(_title, _initialValue);
 }
 
 class _DashboardCellState extends State<DashboardCell> {
@@ -29,29 +30,27 @@ class _DashboardCellState extends State<DashboardCell> {
         decoration: BoxDecoration(
           border: Border.all(
             width: 1,
-            //color: Colors.red,
           ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              _title,
-              textAlign: TextAlign.center,
-              //style: TextStyle(fontWeight: FontWeight.bold),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                _title,
+                textAlign: TextAlign.center,
+              ),
             ),
             Expanded(
-              // child: FittedBox(
-               // fit: BoxFit.scaleDown,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(10, 30, 10, 30),
-                  child: Text(
-                    _value,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 30),
-                  ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 30, 10, 30),
+                child: Text(
+                  _value,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 30),
                 ),
-             // ),
+              ),
             ),
           ],
         ),

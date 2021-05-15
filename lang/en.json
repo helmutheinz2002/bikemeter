@@ -1,0 +1,11 @@
+{
+  "speed": "Speed",
+  "distance": "Distance",
+  "pause": "Pause recording",
+  "start": "Start recording",
+  "settings": "Settings",
+  "current": "Current",
+  "history": "History",
+  "elevation": "Elevation",
+  "time": "Time"
+}

@@ -5,8 +5,6 @@ class SpeedGauge extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SpeedGaugeState();
 
-  void setSpeed(double speed) {
-  }
 }
 
 class _SpeedGaugeState extends State<SpeedGauge> {
@@ -24,21 +22,16 @@ class _SpeedGaugeState extends State<SpeedGauge> {
 
   @override
   Widget build(BuildContext context) {
-    bool isCardView = false;
-    double _interval = 10;
     return SfRadialGauge(
-      //animationDuration: 3500,
-      //enableLoadingAnimation: true,
       axes: <RadialAxis>[
         RadialAxis(
             startAngle: 130,
             endAngle: 50,
             minimum: 0,
             maximum: 60,
-            interval: isCardView ? 20 : _interval,
+            interval: 10,
             minorTicksPerInterval: 9,
             showAxisLine: false,
-            //radiusFactor: model.isWebFullView ? 0.8 : 0.9,
             radiusFactor: 0.8,
             labelOffset: 8,
             ranges: <GaugeRange>[
@@ -63,12 +56,12 @@ class _SpeedGaugeState extends State<SpeedGauge> {
               ),
               GaugeAnnotation(
                   angle: 90,
-                  positionFactor: 0.8,
+                  positionFactor: 1,
                   widget: Container(
                     child: Text(
                       '$_speed',
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
                     ),
                   ))
             ],
@@ -77,17 +70,17 @@ class _SpeedGaugeState extends State<SpeedGauge> {
                 value: _speed,
                 needleLength: 0.6,
                 lengthUnit: GaugeSizeUnit.factor,
-                needleStartWidth: isCardView ? 0 : 1,
-                needleEndWidth: isCardView ? 5 : 8,
+                needleStartWidth: 1,
+                needleEndWidth: 8,
                 //animationType: AnimationType.easeOutBack,
                 //enableAnimation: true,
                 //animationDuration: 1200,
                 knobStyle: KnobStyle(
-                    knobRadius: isCardView ? 0.06 : 0.09,
+                    knobRadius: 0.09,
                     sizeUnit: GaugeSizeUnit.factor,
                     borderColor: const Color(0xFF303030),
                     //color: Colors.white,
-                    borderWidth: isCardView ? 0.035 : 0.05),
+                    borderWidth: 0.05),
                 /*
                 tailStyle: TailStyle(
                     color: Colors.black45,//const Color(0xFFF8B195),
@@ -99,7 +92,7 @@ class _SpeedGaugeState extends State<SpeedGauge> {
                 needleColor: Colors.black45,//const Color(0xFFF8B195),
               )
             ],
-            axisLabelStyle: GaugeTextStyle(fontSize: isCardView ? 10 : 12),
+            axisLabelStyle: GaugeTextStyle(fontSize: 12),
             majorTickStyle: MajorTickStyle(
                 length: 0.25, lengthUnit: GaugeSizeUnit.factor, thickness: 1.5),
             minorTickStyle: MinorTickStyle(
