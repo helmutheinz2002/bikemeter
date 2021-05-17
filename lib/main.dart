@@ -10,12 +10,20 @@ void main() {
   runApp(Bikemeter());
 }
 
-class Bikemeter extends StatelessWidget {
+class Bikemeter extends StatefulWidget {
   static const String appName = "Bikemeter";
 
-  Bikemeter() {
-    var controller = MeasureController();
-    controller.stream.listen((event) { print(event.distance);});
+  @override
+  _BikemeterState createState() => _BikemeterState();
+}
+
+class _BikemeterState extends State<Bikemeter> {
+  MeasureController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = MeasureController();
   }
 
   @override
@@ -35,18 +43,18 @@ class Bikemeter extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
       ],
       localeResolutionCallback: selectLocale,
-      title: appName,
+      title: Bikemeter.appName,
       home: PlatformTabScaffold(
         tabController: PlatformTabController(),
         appBarBuilder: createAppBar,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.directions_bike),
-            label: '',//AppLocalizations.of(context).translate('current'),
+            label: '', //AppLocalizations.of(context).translate('current'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
-            label: '',//AppLocalizations.of(context).translate('history'),
+            label: '', //AppLocalizations.of(context).translate('history'),
           ),
         ],
         bodyBuilder: createContent,
@@ -54,8 +62,8 @@ class Bikemeter extends StatelessWidget {
     );
   }
 
-  dynamic _createButton(
-      BuildContext context, IconData iconData, String label, double size) {
+  dynamic _createButton(BuildContext context, IconData iconData, String label,
+      double size, void onPressedCB()) {
     bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     if (isIOS) {
       return SizedBox(
@@ -68,13 +76,13 @@ class Bikemeter extends StatelessWidget {
             size: size,
             semanticLabel: label,
           ),
-          onPressed: () => {},
+          onPressed: onPressedCB,
         ),
       );
     }
     return IconButton(
       padding: EdgeInsets.all(1),
-      onPressed: () {},
+      onPressed: onPressedCB,
       icon: Icon(
         iconData,
         size: size,
@@ -85,13 +93,40 @@ class Bikemeter extends StatelessWidget {
 
   PlatformAppBar createAppBar(BuildContext context, int index) {
     return PlatformAppBar(
-      leading: _createButton(context, Icons.settings, AppLocalizations.of(context).translate('settings'), 20),
+      title: Text(Bikemeter.appName),
+      leading: _createButton(context, Icons.settings,
+          AppLocalizations.of(context).translate('settings'), 20, null),
       trailingActions: [
-        _createButton(context, Icons.pause, AppLocalizations.of(context).translate('pause'), 20),
-        //_createButton(context, Icons.stop, 'Stop', 20),
-        _createButton(context, Icons.play_circle_fill, AppLocalizations.of(context).translate('start'), 40),
+        StreamBuilder(
+          initialData: MeasureState.Stopped,
+          stream: _controller.stateStream,
+          builder:
+              (BuildContext context, AsyncSnapshot<MeasureState> snapshot) {
+            return Row(
+              children: [
+                _createButton(
+                    context,
+                    Icons.stop,
+                    AppLocalizations.of(context).translate('stop'),
+                    20,
+                    getStopCB(snapshot.data)),
+                _createButton(
+                    context,
+                    Icons.pause,
+                    AppLocalizations.of(context).translate('pause'),
+                    20,
+                    getPauseCB(snapshot.data)),
+                _createButton(
+                    context,
+                    Icons.play_circle_fill,
+                    AppLocalizations.of(context).translate('start'),
+                    40,
+                    getStartCB(snapshot.data)),
+              ],
+            );
+          },
+        ),
       ],
-      title: Text(appName),
     );
   }
 
@@ -120,5 +155,35 @@ class Bikemeter extends StatelessWidget {
       }
     }
     return supportedLocales.first;
+  }
+
+  Function getPauseCB(MeasureState state) {
+    print('getPauseCB $state');
+    if (state == MeasureState.Active) {
+      return () {
+        _controller.pause();
+      };
+    }
+    return null;
+  }
+
+  Function getStopCB(MeasureState state) {
+    print('getStopCB $state');
+    if (state == MeasureState.Active || state == MeasureState.Paused) {
+      return () {
+        _controller.stop();
+      };
+    }
+    return null;
+  }
+
+  Function getStartCB(MeasureState state) {
+    print('getStartCB $state');
+    if (state == MeasureState.Stopped || state == MeasureState.Paused) {
+      return () {
+        _controller.start();
+      };
+    }
+    return null;
   }
 }
