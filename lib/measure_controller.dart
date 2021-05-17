@@ -8,11 +8,11 @@ class MeasureController {
   MeasureState state = MeasureState.Stopped;
 
   final _measureController = StreamController<Measurement>();
-  final _stateController = StreamController<MeasureState>();
+  final _stateController = StreamController<MeasureState>.broadcast();
 
   Stream<Measurement> get measureStream => _measureController.stream;
 
-  Stream<MeasureState> get stateStream => _stateController.stream;
+  Stream<MeasureState> get stateStream => _stateController.stream.asBroadcastStream();
 
   void start() {
     print('Start');
