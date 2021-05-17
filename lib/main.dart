@@ -1,4 +1,5 @@
 import 'package:bikemeter/dashboard.dart';
+import 'package:bikemeter/measure_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,6 +12,11 @@ void main() {
 
 class Bikemeter extends StatelessWidget {
   static const String appName = "Bikemeter";
+
+  Bikemeter() {
+    var controller = MeasureController();
+    controller.stream.listen((event) { print(event.distance);});
+  }
 
   @override
   Widget build(BuildContext context) {
