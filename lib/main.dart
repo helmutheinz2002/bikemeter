@@ -1,13 +1,9 @@
-import 'package:bikemeter/control_panel.dart';
-import 'package:bikemeter/dashboard.dart';
-import 'package:bikemeter/measure_controller.dart';
 import 'package:bikemeter/tab_scaffold.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'app_localizations.dart';
-import 'control_panel.dart';
 
 void main() {
   runApp(Bikemeter());
