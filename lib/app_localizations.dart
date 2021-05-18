@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AppLocalizations {
+  static const List<Locale> supportedLocales = [
+    Locale("en"),
+    Locale("de"),
+  ];
+
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
 
@@ -13,7 +18,13 @@ class AppLocalizations {
   AppLocalizations(this.locale);
 
   static AppLocalizations of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+    AppLocalizations appLocalizations =
+        Localizations.of<AppLocalizations>(context, AppLocalizations);
+    if (appLocalizations == null) {
+      print("Locale null");
+      return SafeAppLocalizations();
+    }
+    return appLocalizations;
   }
 
   Future<bool> load() async {
@@ -40,7 +51,12 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) {
-    return ['en', 'de'].contains(locale.languageCode);
+    for (Locale l in AppLocalizations.supportedLocales) {
+      if (locale.languageCode == l.languageCode) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @override
@@ -52,4 +68,13 @@ class _AppLocalizationsDelegate
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+class SafeAppLocalizations extends AppLocalizations {
+  SafeAppLocalizations() : super(Locale("en"));
+
+  @override
+  String translate(String key) {
+    return '';
+  }
 }
