@@ -46,7 +46,6 @@ class _TabScaffoldState extends State<TabScaffold> {
   }
 
   PlatformAppBar createAppBar(BuildContext context, int index) {
-    print("createAppBar");
     return PlatformAppBar(
       title: Text(Bikemeter.appName),
       leading: ControlPanelState.createButton(context, Icons.settings,

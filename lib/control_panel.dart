@@ -5,7 +5,7 @@ import 'app_localizations.dart';
 import 'measure_controller.dart';
 
 class ControlPanel extends StatefulWidget {
-  MeasureController _controller;
+  final MeasureController _controller;
 
   ControlPanel(this._controller, {Key key}) : super(key: key);
 

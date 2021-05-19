@@ -32,6 +32,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_platform_widgets: ^1.7.1
   syncfusion_flutter_gauges: ^19.1.59
+  location: ^4.1.1
 
 dev_dependencies:
   flutter_test:
