@@ -16,12 +16,10 @@ class TabScaffold extends StatefulWidget {
 }
 
 class _TabScaffoldState extends State<TabScaffold> {
-  MeasureController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = MeasureController();
   }
 
   @override
@@ -51,7 +49,7 @@ class _TabScaffoldState extends State<TabScaffold> {
       leading: ControlPanelState.createButton(context, Icons.settings,
           AppLocalizations.of(context).translate('settings'), 20, null),
       trailingActions: [
-        ControlPanel(_controller),
+        ControlPanel(),
       ],
     );
   }

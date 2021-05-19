@@ -1,21 +1,31 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:location/location.dart';
+import 'package:circular_buffer/circular_buffer.dart';
 
 enum MeasureState { Active, Paused, Stopping, Stopped }
 
 class MeasureController {
   static const int measureInterval = 2;
-  Location _location = new Location();
-  LocationData last;
+  static MeasureController instance;
+  final Location _location = new Location();
+  final CircularBuffer<LocationData> buffer = CircularBuffer<LocationData>(5);
   MeasureState state = MeasureState.Stopped;
 
-  final _measureController = StreamController<Measurement>();
+  final _measureController = StreamController<Measurement>.broadcast();
   final _stateController = StreamController<MeasureState>.broadcast();
 
-  Stream<Measurement> get measureStream => _measureController.stream;
+  Stream<Measurement> get measureStream => _measureController.stream.asBroadcastStream();
 
   Stream<MeasureState> get stateStream =>
       _stateController.stream.asBroadcastStream();
+
+  static MeasureController singleton() {
+    if(instance==null) {
+      instance = MeasureController();
+    }
+    return instance;
+  }
 
   void start() async {
     bool _serviceEnabled = await _location.serviceEnabled();
@@ -57,24 +67,48 @@ class MeasureController {
     if (state == MeasureState.Stopping) {
       state = MeasureState.Stopped;
       timer.cancel();
+      buffer.reset();
       _stateController.add(state);
     }
 
-    _location.getLocation().then((LocationData locationData) {
-      var measurement = Measurement(locationData.altitude);
-      _measureController.add(measurement);
-      last = locationData;
-      print(
-          "location (${locationData.latitude},${locationData
-              .longitude},${locationData.altitude})");
-    }, onError: (e) {
-      print("Location error $e");
-    });
+    if (state == MeasureState.Active) {
+      _location.getLocation().then((LocationData locationData) {
+        var measurement = Measurement();
+        _measureController.add(measurement);
+        buffer.add(locationData);
+        print(
+            "location ${locationData.latitude},${locationData.longitude},${locationData.altitude},${locationData.speed}");
+      }, onError: (e) {
+        print("Location error $e");
+      });
+    }
   }
 }
 
 class Measurement {
-  double distance;
+  double distanceTotal;
+  double distanceTrip;
+  double speed;
+  double speedMax;
+  double speedAvg;
+  double speedStdDeviation;
+  double elevation;
+  double climbTotal;
+  int timeMoving;
+  int timeTotal;
 
-  Measurement(this.distance);
+  static Random rnd = Random(0);
+
+  Measurement() {
+    distanceTotal = rnd.nextDouble();
+    distanceTrip = rnd.nextDouble();
+    speed = rnd.nextDouble();
+    speedAvg = rnd.nextDouble();
+    speedMax = rnd.nextDouble();
+    speedStdDeviation = rnd.nextDouble();
+    elevation = rnd.nextDouble();
+    climbTotal = rnd.nextDouble();
+    timeMoving = rnd.nextInt(283722);
+    timeTotal = rnd.nextInt(283722);
+  }
 }

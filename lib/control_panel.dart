@@ -3,26 +3,21 @@ import 'package:flutter/material.dart';
 
 import 'app_localizations.dart';
 import 'measure_controller.dart';
+import 'measure_controller.dart';
 
 class ControlPanel extends StatefulWidget {
-  final MeasureController _controller;
-
-  ControlPanel(this._controller, {Key key}) : super(key: key);
+  ControlPanel({Key key}) : super(key: key);
 
   @override
-  ControlPanelState createState() => ControlPanelState(_controller);
+  ControlPanelState createState() => ControlPanelState();
 }
 
 class ControlPanelState extends State<ControlPanel> {
-  MeasureController _controller;
-
-  ControlPanelState(this._controller);
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       initialData: MeasureState.Stopped,
-      stream: _controller.stateStream,
+      stream: MeasureController.singleton().stateStream,
       builder: (BuildContext context, AsyncSnapshot<MeasureState> snapshot) {
         return Row(
           children: [
@@ -82,7 +77,7 @@ class ControlPanelState extends State<ControlPanel> {
   Function getPauseCB(MeasureState state) {
     if (state == MeasureState.Active) {
       return () {
-        _controller.pause();
+        MeasureController.singleton().pause();
       };
     }
     return null;
@@ -91,7 +86,7 @@ class ControlPanelState extends State<ControlPanel> {
   Function getStopCB(MeasureState state) {
     if (state == MeasureState.Active || state == MeasureState.Paused) {
       return () {
-        _controller.stop();
+        MeasureController.singleton().stop();
       };
     }
     return null;
@@ -100,7 +95,7 @@ class ControlPanelState extends State<ControlPanel> {
   Function getStartCB(MeasureState state) {
     if (state == MeasureState.Stopped || state == MeasureState.Paused) {
       return () {
-        _controller.start();
+        MeasureController.singleton().start();
       };
     }
     return null;

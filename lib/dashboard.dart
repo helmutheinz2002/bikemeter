@@ -21,8 +21,8 @@ class _DashboardState extends State<Dashboard> {
           flex: 2,
           child: Row(
             children: <Widget>[
-              DashboardCell(AppLocalizations.of(context).translate('speed'), "56.4"),
-              DashboardCell(AppLocalizations.of(context).translate('distance'), "37.5"),
+              DashboardCell(AppLocalizations.of(context).translate('speed')),
+              DashboardCell(AppLocalizations.of(context).translate('distance')),
             ],
             crossAxisAlignment: CrossAxisAlignment.stretch,
           ),
@@ -31,8 +31,8 @@ class _DashboardState extends State<Dashboard> {
           flex: 2,
           child: Row(
             children: <Widget>[
-              DashboardCell(AppLocalizations.of(context).translate('elevation'), "470"),
-              DashboardCell(AppLocalizations.of(context).translate('time'), "0:56:51"),
+              DashboardCell(AppLocalizations.of(context).translate('elevation')),
+              DashboardCell(AppLocalizations.of(context).translate('time')),
             ],
             crossAxisAlignment: CrossAxisAlignment.stretch,
           ),

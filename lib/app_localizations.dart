@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class AppLocalizations {
   static const List<Locale> supportedLocales = [
@@ -25,6 +26,11 @@ class AppLocalizations {
       return SafeAppLocalizations();
     }
     return appLocalizations;
+  }
+
+  String format(dynamic number) {
+    NumberFormat f = new NumberFormat('###0.00', locale.languageCode);
+    return f.format(number);
   }
 
   Future<bool> load() async {
