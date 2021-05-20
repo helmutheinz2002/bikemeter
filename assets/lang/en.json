@@ -7,5 +7,9 @@
   "current": "Current",
   "history": "History",
   "elevation": "Elevation",
-  "time": "Time"
+  "time": "Time",
+  "average": "Average",
+  "trip": "Trip",
+  "moving": "Moving",
+  "total": "Total"
 }

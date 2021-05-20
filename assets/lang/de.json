@@ -7,5 +7,9 @@
   "current": "Aktuell",
   "history": "Historie",
   "elevation": "Höhe",
-  "time": "Zeit"
+  "time": "Zeit",
+  "average": "Durchschnitt",
+  "trip": "Trip",
+  "moving": "Fahrt",
+  "total": "Gesamt"
 }

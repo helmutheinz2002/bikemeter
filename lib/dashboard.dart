@@ -4,12 +4,7 @@ import 'package:bikemeter/speed_gauge.dart';
 import 'package:flutter/material.dart';
 import "dashboard_cell.dart";
 
-class Dashboard extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _DashboardState();
-}
-
-class _DashboardState extends State<Dashboard> {
+class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(

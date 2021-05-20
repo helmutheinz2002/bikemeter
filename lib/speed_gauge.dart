@@ -1,27 +1,35 @@
+import 'package:bikemeter/app_localizations.dart';
+import 'package:bikemeter/measure_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class SpeedGauge extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _SpeedGaugeState();
-
 }
 
 class _SpeedGaugeState extends State<SpeedGauge> {
-  double _speed = 22.0;
-  double _minRange = 14.0;
-  double _maxRange = 27.0;
+  Measurement _measurement;
 
-  void setSpeed(double speed, [double minRange, double maxRange]) {
-    setState(() {
-      _speed = speed;
-      _minRange = minRange==null?_speed:minRange;
-      _maxRange = maxRange==null?_speed:maxRange;
+  @override
+  void initState() {
+    super.initState();
+    MeasureController.singleton().measureStream.listen((measurement) {
+      if(mounted) {
+        setState(() {
+          _measurement = measurement;
+        });
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    double value = _measurement==null?0:_measurement.speed*20.0;
+    double minRange = value-10.0;
+    double maxRange = value+10.0;
+    String speed = AppLocalizations.of(context).format(value);
+
     return SfRadialGauge(
       axes: <RadialAxis>[
         RadialAxis(
@@ -36,8 +44,8 @@ class _SpeedGaugeState extends State<SpeedGauge> {
             labelOffset: 8,
             ranges: <GaugeRange>[
               GaugeRange(
-                  startValue: _minRange,
-                  endValue: _maxRange,
+                  startValue: minRange,
+                  endValue: maxRange,
                   startWidth: 0.265,
                   sizeUnit: GaugeSizeUnit.factor,
                   endWidth: 0.265,
@@ -59,7 +67,7 @@ class _SpeedGaugeState extends State<SpeedGauge> {
                   positionFactor: 1,
                   widget: Container(
                     child: Text(
-                      '$_speed',
+                      '$speed',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
                     ),
@@ -67,7 +75,7 @@ class _SpeedGaugeState extends State<SpeedGauge> {
             ],
             pointers: <GaugePointer>[
               NeedlePointer(
-                value: _speed,
+                value: value,
                 needleLength: 0.6,
                 lengthUnit: GaugeSizeUnit.factor,
                 needleStartWidth: 1,
