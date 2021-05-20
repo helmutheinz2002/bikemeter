@@ -11,5 +11,7 @@
   "average": "Durchschnitt",
   "trip": "Trip",
   "moving": "Fahrt",
-  "total": "Gesamt"
+  "total": "Gesamt",
+  "maximum": "Maximum",
+  "climb": "Anstieg"
 }

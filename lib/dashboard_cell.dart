@@ -38,9 +38,12 @@ class _DashboardCellState extends State<DashboardCell> {
         : _formatter.pickAndFormat(context, _measurement, false);
 
     String title = AppLocalizations.of(context).translate(_formatter.title);
-    String upperLabel = AppLocalizations.of(context).translate(_formatter.upperLabel);
-    String upperUnit = AppLocalizations.of(context).translate(_formatter.upperUnit);
-    String lowerLabel = AppLocalizations.of(context).translate(_formatter.lowerLabel);
+    String upperLabel =
+        AppLocalizations.of(context).translate(_formatter.upperLabel);
+    String lowerLabel =
+        AppLocalizations.of(context).translate(_formatter.lowerLabel);
+    String unit =
+        AppLocalizations.of(context).translate(_formatter.unit);
 
     return Expanded(
       child: Container(
@@ -60,51 +63,43 @@ class _DashboardCellState extends State<DashboardCell> {
                 style: TextStyle(fontSize: 15),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: Row(
-                children: [
-                  Text(
-                    upperLabel,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 10),
-                  ),
-                  Text(
-                    upperValue,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 25),
-                  ),
-                  Text(
-                    upperUnit,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 10),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: Text(
-                lowerValue,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 25),
-              ),
-            ),
-            /*
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: PlatformText(
-                  upperValue,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-            ),
-
-             */
+            getRow(upperLabel, upperValue, unit),
+            getRow(lowerLabel, lowerValue, unit),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget getRow(String label, value, unit) {
+    return Padding(
+      padding: EdgeInsets.all(5),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              textAlign: TextAlign.start,
+              style: TextStyle(fontSize: 10),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              value,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 22),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              unit,
+              textAlign: TextAlign.end,
+              style: TextStyle(fontSize: 10),
+            ),
+          ),
+        ],
       ),
     );
   }

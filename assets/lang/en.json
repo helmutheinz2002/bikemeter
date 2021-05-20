@@ -11,5 +11,7 @@
   "average": "Average",
   "trip": "Trip",
   "moving": "Moving",
-  "total": "Total"
+  "total": "Total",
+  "maximum": "Maximum",
+  "climb": "Climb"
 }

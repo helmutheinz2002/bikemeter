@@ -29,7 +29,7 @@ class AppLocalizations {
   }
 
   String format(dynamic number) {
-    NumberFormat f = new NumberFormat('###0.00', locale.languageCode);
+    NumberFormat f = new NumberFormat('###0.0', locale.languageCode);
     return f.format(number);
   }
 

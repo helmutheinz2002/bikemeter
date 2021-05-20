@@ -7,10 +7,9 @@ abstract class CellFormatter {
   final String title;
   final String upperLabel;
   final String lowerLabel;
-  final String upperUnit;
-  final String lowerUnit;
+  final String unit;
 
-  const CellFormatter(this.title, this.upperLabel, this.upperUnit, this.lowerLabel, this.lowerUnit);
+  const CellFormatter(this.title, this.upperLabel, this.lowerLabel, this.unit);
 
   String pickAndFormat(
       BuildContext context, Measurement measurement, bool upper);
@@ -24,7 +23,7 @@ class CellFormatters {
 }
 
 class TimeCellFormatter extends CellFormatter {
-  const TimeCellFormatter() : super("time", "moving", "h", "total", "h");
+  const TimeCellFormatter() : super("time", "moving", "total", "h");
 
   String formatDuration(Duration d) {
     return d.toString().split('.')[0];
@@ -37,7 +36,7 @@ class TimeCellFormatter extends CellFormatter {
 }
 
 class SpeedCellFormatter extends CellFormatter {
-  const SpeedCellFormatter() : super("speed", "average", "km/h", "maximum", "km/h");
+  const SpeedCellFormatter() : super("speed", "average", "maximum", "km/h");
 
   @override
   String pickAndFormat(
@@ -47,7 +46,7 @@ class SpeedCellFormatter extends CellFormatter {
 }
 
 class ElevationCellFormatter extends CellFormatter {
-  const ElevationCellFormatter() : super("elevation", "current", "masl", "climb", "m");
+  const ElevationCellFormatter() : super("elevation", "current", "climb", "m");
 
   @override
   String pickAndFormat(
@@ -57,7 +56,7 @@ class ElevationCellFormatter extends CellFormatter {
 }
 
 class DistanceCellFormatter extends CellFormatter {
-  const DistanceCellFormatter() : super("distance", "trip", "km", "total", "km");
+  const DistanceCellFormatter() : super("distance", "trip", "total", "km");
 
   @override
   String pickAndFormat(
