@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:location/location.dart';
 import 'package:circular_buffer/circular_buffer.dart';
+import 'package:rxdart/rxdart.dart';
 
 enum MeasureState { Active, Paused, Stopping, Stopped }
 
@@ -12,13 +13,13 @@ class MeasureController {
   final CircularBuffer<LocationData> buffer = CircularBuffer<LocationData>(5);
   MeasureState state = MeasureState.Stopped;
 
-  final _measureController = StreamController<Measurement>.broadcast();
-  final _stateController = StreamController<MeasureState>.broadcast();
+  final _measureController = BehaviorSubject<Measurement>();
+  final _stateController = BehaviorSubject<MeasureState>();
 
-  Stream<Measurement> get measureStream => _measureController.stream.asBroadcastStream();
+  Stream<Measurement> get measureStream => _measureController.stream;
 
   Stream<MeasureState> get stateStream =>
-      _stateController.stream.asBroadcastStream();
+      _stateController.stream;
 
   static MeasureController singleton() {
     if(instance==null) {
@@ -94,8 +95,8 @@ class Measurement {
   double speedStdDeviation;
   double elevation;
   double climbTotal;
-  int timeMoving;
-  int timeTotal;
+  Duration timeMoving;
+  Duration timeTotal;
 
   static Random rnd = Random(0);
 
@@ -108,7 +109,7 @@ class Measurement {
     speedStdDeviation = rnd.nextDouble();
     elevation = rnd.nextDouble();
     climbTotal = rnd.nextDouble();
-    timeMoving = rnd.nextInt(283722);
-    timeTotal = rnd.nextInt(283722);
+    timeMoving = Duration(seconds: rnd.nextInt(6000));
+    timeTotal = Duration(seconds: rnd.nextInt(6000));
   }
 }

@@ -6,6 +6,8 @@ import 'measure_controller.dart';
 import 'measure_controller.dart';
 
 class ControlPanel extends StatefulWidget {
+  static ControlPanelState _myState;
+
   ControlPanel({Key key}) : super(key: key);
 
   @override
@@ -13,40 +15,46 @@ class ControlPanel extends StatefulWidget {
 }
 
 class ControlPanelState extends State<ControlPanel> {
+  MeasureState _measureState = MeasureState.Stopped;
+
+  @override
+  void initState() {
+    super.initState();
+    MeasureController.singleton().stateStream.listen((event) {
+      setState(() {
+        _measureState = event;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      initialData: MeasureState.Stopped,
-      stream: MeasureController.singleton().stateStream,
-      builder: (BuildContext context, AsyncSnapshot<MeasureState> snapshot) {
-        return Row(
-          children: [
-            createButton(
-                context,
-                Icons.stop,
-                AppLocalizations.of(context).translate('stop'),
-                20,
-                getStopCB(snapshot.data)),
-            createButton(
-                context,
-                Icons.pause,
-                AppLocalizations.of(context).translate('pause'),
-                20,
-                getPauseCB(snapshot.data)),
-            createButton(
-                context,
-                Icons.play_circle_fill,
-                AppLocalizations.of(context).translate('start'),
-                40,
-                getStartCB(snapshot.data)),
-          ],
-        );
-      },
+    return Row(
+      children: [
+        createButton(
+            context,
+            Icons.stop,
+            AppLocalizations.of(context).translate('stop'),
+            20,
+            getStopCB(_measureState)),
+        createButton(
+            context,
+            Icons.pause,
+            AppLocalizations.of(context).translate('pause'),
+            20,
+            getPauseCB(_measureState)),
+        createButton(
+            context,
+            Icons.play_circle_fill,
+            AppLocalizations.of(context).translate('start'),
+            40,
+            getStartCB(_measureState)),
+      ],
     );
   }
 
-  static dynamic createButton(BuildContext context, IconData iconData, String label,
-      double size, void onPressedCB()) {
+  static dynamic createButton(BuildContext context, IconData iconData,
+      String label, double size, void onPressedCB()) {
     bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     if (isIOS) {
       return SizedBox(

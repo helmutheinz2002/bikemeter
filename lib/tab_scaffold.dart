@@ -8,19 +8,8 @@ import 'dashboard.dart';
 import 'main.dart';
 import 'measure_controller.dart';
 
-class TabScaffold extends StatefulWidget {
+class TabScaffold extends StatelessWidget {
   const TabScaffold({Key key}) : super(key: key);
-
-  @override
-  _TabScaffoldState createState() => _TabScaffoldState();
-}
-
-class _TabScaffoldState extends State<TabScaffold> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

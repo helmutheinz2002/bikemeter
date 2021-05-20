@@ -1,24 +1,46 @@
 import 'package:flutter/material.dart';
 import 'app_localizations.dart';
+import 'cell_formatter.dart';
 import 'measure_controller.dart';
 
 class DashboardCell extends StatefulWidget {
-  final String _title;
+  final CellFormatter _cellFormatter;
 
-  DashboardCell(this._title);
+  const DashboardCell(this._cellFormatter);
 
   @override
-  _DashboardCellState createState() => _DashboardCellState(_title, 'km/h');
+  _DashboardCellState createState() => _DashboardCellState(_cellFormatter);
 }
 
 class _DashboardCellState extends State<DashboardCell> {
-  final String _title;
-  final String _unit;
+  final CellFormatter _formatter;
+  Measurement _measurement;
 
-  _DashboardCellState(this._title, this._unit);
+  _DashboardCellState(this._formatter);
+
+  @override
+  void initState() {
+    super.initState();
+    MeasureController.singleton().measureStream.listen((measurement) {
+      setState(() {
+        _measurement = measurement;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    String upperValue = _measurement == null
+        ? '-'
+        : _formatter.pickAndFormat(context, _measurement, true);
+    String lowerValue = _measurement == null
+        ? '-'
+        : _formatter.pickAndFormat(context, _measurement, false);
+
+    String title = AppLocalizations.of(context).translate(_formatter.title);
+    String upperLabel = AppLocalizations.of(context).translate(_formatter.upperLabel);
+    String upperUnit = AppLocalizations.of(context).translate(_formatter.upperUnit);
+    String lowerLabel = AppLocalizations.of(context).translate(_formatter.lowerLabel);
 
     return Expanded(
       child: Container(
@@ -27,39 +49,48 @@ class _DashboardCellState extends State<DashboardCell> {
             width: 1,
           ),
         ),
-        child: StreamBuilder(
-            initialData: Measurement(),
-            stream: MeasureController.singleton().measureStream,
-            builder:
-                (BuildContext context, AsyncSnapshot<Measurement> snapshot) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                '$title',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 15),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: Row(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      '$_title $_unit',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 15),
-                    ),
+                  Text(
+                    upperLabel,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 10),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Text(
-                      AppLocalizations.of(context).format(snapshot.data.speed),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 25),
-                    ),
+                  Text(
+                    upperValue,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 25),
                   ),
-                  Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Text(
-                      AppLocalizations.of(context).format(snapshot.data.timeMoving),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 25),
-                    ),
+                  Text(
+                    upperUnit,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 10),
                   ),
-                  /*
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: Text(
+                lowerValue,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 25),
+              ),
+            ),
+            /*
             Expanded(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -72,9 +103,8 @@ class _DashboardCellState extends State<DashboardCell> {
             ),
 
              */
-                ],
-              );
-            }),
+          ],
+        ),
       ),
     );
   }

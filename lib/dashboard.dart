@@ -1,4 +1,5 @@
 import 'package:bikemeter/app_localizations.dart';
+import 'package:bikemeter/cell_formatter.dart';
 import 'package:bikemeter/speed_gauge.dart';
 import 'package:flutter/material.dart';
 import "dashboard_cell.dart";
@@ -21,8 +22,8 @@ class _DashboardState extends State<Dashboard> {
           flex: 2,
           child: Row(
             children: <Widget>[
-              DashboardCell(AppLocalizations.of(context).translate('speed')),
-              DashboardCell(AppLocalizations.of(context).translate('distance')),
+              DashboardCell(CellFormatters.speedCellFormatter),
+              DashboardCell(CellFormatters.distanceCellFormatter),
             ],
             crossAxisAlignment: CrossAxisAlignment.stretch,
           ),
@@ -31,8 +32,8 @@ class _DashboardState extends State<Dashboard> {
           flex: 2,
           child: Row(
             children: <Widget>[
-              DashboardCell(AppLocalizations.of(context).translate('elevation')),
-              DashboardCell(AppLocalizations.of(context).translate('time')),
+              DashboardCell(CellFormatters.elevationCellFormatter),
+              DashboardCell(CellFormatters.timeCellFormatter),
             ],
             crossAxisAlignment: CrossAxisAlignment.stretch,
           ),
