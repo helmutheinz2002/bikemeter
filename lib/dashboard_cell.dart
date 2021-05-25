@@ -56,7 +56,7 @@ class _DashboardCellState extends State<DashboardCell> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.fromLTRB(5,5,5,1),
               child: Text(
                 '$title',
                 textAlign: TextAlign.center,
@@ -89,7 +89,7 @@ class _DashboardCellState extends State<DashboardCell> {
             child: Text(
               value,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 22),
+              style: TextStyle(fontSize: 20),
             ),
           ),
           Expanded(

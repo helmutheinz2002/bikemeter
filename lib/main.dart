@@ -1,3 +1,4 @@
+import 'package:bikemeter/screen_locker.dart';
 import 'package:bikemeter/tab_scaffold.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,13 @@ class Bikemeter extends StatefulWidget {
 }
 
 class _BikemeterState extends State<Bikemeter> {
+
+  @override
+  void initState() {
+    super.initState();
+    new ScreenLocker();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;

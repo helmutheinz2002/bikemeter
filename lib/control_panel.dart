@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'app_localizations.dart';
 import 'measure_controller.dart';
-import 'measure_controller.dart';
 
 class ControlPanel extends StatefulWidget {
-  static ControlPanelState _myState;
-
   ControlPanel({Key key}) : super(key: key);
 
   @override

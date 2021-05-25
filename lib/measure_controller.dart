@@ -1,16 +1,22 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:location/location.dart';
+
+//import 'package:location/location.dart';
+import 'package:bikemeter/geo_locator.dart';
 import 'package:circular_buffer/circular_buffer.dart';
 import 'package:rxdart/rxdart.dart';
+//import 'package:geolocator/geolocator.dart';
 
 enum MeasureState { Active, Paused, Stopping, Stopped }
 
 class MeasureController {
   static const int measureInterval = 2;
   static MeasureController instance;
-  final Location _location = new Location();
-  final CircularBuffer<LocationData> buffer = CircularBuffer<LocationData>(5);
+  final GeoLocation _location = new GeoLocation(0, 0, 0);
+  bool _measuring = false;
+
+  //final CircularBuffer<LocationData> buffer = CircularBuffer<LocationData>(5);
+  final GeoLocator _geoLocator = GeoLocator();
   MeasureState state = MeasureState.Stopped;
 
   final _measureController = BehaviorSubject<Measurement>();
@@ -18,31 +24,19 @@ class MeasureController {
 
   Stream<Measurement> get measureStream => _measureController.stream;
 
-  Stream<MeasureState> get stateStream =>
-      _stateController.stream;
+  Stream<MeasureState> get stateStream => _stateController.stream;
 
   static MeasureController singleton() {
-    if(instance==null) {
+    if (instance == null) {
       instance = MeasureController();
     }
     return instance;
   }
 
   void start() async {
-    bool _serviceEnabled = await _location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await _location.requestService();
-      if (!_serviceEnabled) {
-        return;
-      }
-    }
-
-    PermissionStatus _permissionGranted = await _location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await _location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
+    bool serviceEnabled = await _geoLocator.enableLocation();
+    if (!serviceEnabled) {
+      return;
     }
 
     state = MeasureState.Active;
@@ -67,19 +61,28 @@ class MeasureController {
   void _measure(Timer timer) {
     if (state == MeasureState.Stopping) {
       state = MeasureState.Stopped;
+      _measuring=false;
       timer.cancel();
-      buffer.reset();
+//      buffer.reset();
       _stateController.add(state);
     }
 
     if (state == MeasureState.Active) {
-      _location.getLocation().then((LocationData locationData) {
+      if(_measuring) {
+        return;
+      }
+
+      _measuring=true;
+      _geoLocator.getLocation().then((GeoLocation location) {
+        _measuring=false;
         var measurement = Measurement();
         _measureController.add(measurement);
-        buffer.add(locationData);
+//        buffer.add(location);
         print(
-            "location ${locationData.latitude},${locationData.longitude},${locationData.altitude},${locationData.speed}");
+            "location lat=${location.latitude}, long=${location.longitude}, alt=${location.altitude}");
       }, onError: (e) {
+        _measuring=false;
+        stop();
         print("Location error $e");
       });
     }

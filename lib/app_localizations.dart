@@ -21,10 +21,6 @@ class AppLocalizations {
   static AppLocalizations of(BuildContext context) {
     AppLocalizations appLocalizations =
         Localizations.of<AppLocalizations>(context, AppLocalizations);
-    if (appLocalizations == null) {
-      print("Locale null");
-      return SafeAppLocalizations();
-    }
     return appLocalizations;
   }
 
@@ -45,7 +41,6 @@ class AppLocalizations {
     return true;
   }
 
-  // This method will be called from every widget which needs a localized text
   String translate(String key) {
     String s = _localizedStrings[key];
     if (s == null) {
@@ -78,13 +73,4 @@ class _AppLocalizationsDelegate
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
-}
-
-class SafeAppLocalizations extends AppLocalizations {
-  SafeAppLocalizations() : super(Locale("en"));
-
-  @override
-  String translate(String key) {
-    return '';
-  }
 }

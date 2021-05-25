@@ -7,6 +7,7 @@ import 'control_panel.dart';
 import 'dashboard.dart';
 import 'main.dart';
 import 'measure_controller.dart';
+import 'settings_page.dart';
 
 class TabScaffold extends StatelessWidget {
   const TabScaffold({Key key}) : super(key: key);
@@ -36,7 +37,9 @@ class TabScaffold extends StatelessWidget {
     return PlatformAppBar(
       title: Text(Bikemeter.appName),
       leading: ControlPanelState.createButton(context, Icons.settings,
-          AppLocalizations.of(context).translate('settings'), 20, null),
+          AppLocalizations.of(context).translate('settings'), 20, () {
+            Navigator.of(context).push(CupertinoPageRoute(builder: (context) => SettingsPage()));
+          }),
       trailingActions: [
         ControlPanel(),
       ],
