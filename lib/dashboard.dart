@@ -17,8 +17,8 @@ class Dashboard extends StatelessWidget {
           flex: 2,
           child: Row(
             children: <Widget>[
-              DashboardCell(CellFormatters.speedCellFormatter),
-              DashboardCell(CellFormatters.distanceCellFormatter),
+              DashboardCell(CellFormatters.speedCellFormatter, [BorderSideName.Top, BorderSideName.Right]),
+              DashboardCell(CellFormatters.distanceCellFormatter, [BorderSideName.Top]),
             ],
             crossAxisAlignment: CrossAxisAlignment.stretch,
           ),
@@ -27,8 +27,8 @@ class Dashboard extends StatelessWidget {
           flex: 2,
           child: Row(
             children: <Widget>[
-              DashboardCell(CellFormatters.elevationCellFormatter),
-              DashboardCell(CellFormatters.timeCellFormatter),
+              DashboardCell(CellFormatters.elevationCellFormatter, [BorderSideName.Top, BorderSideName.Right]),
+              DashboardCell(CellFormatters.timeCellFormatter, [BorderSideName.Top]),
             ],
             crossAxisAlignment: CrossAxisAlignment.stretch,
           ),

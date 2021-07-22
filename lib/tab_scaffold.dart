@@ -28,6 +28,10 @@ class TabScaffold extends StatelessWidget {
           icon: Icon(isIOS ? CupertinoIcons.clock : Icons.history),
           label: AppLocalizations.of(context).translate('history'),
         ),
+        BottomNavigationBarItem(
+          icon: Icon(isIOS ? CupertinoIcons.gear : Icons.settings),
+          label: AppLocalizations.of(context).translate('settings'),
+        ),
       ],
       bodyBuilder: createContent,
     );
@@ -36,15 +40,12 @@ class TabScaffold extends StatelessWidget {
   PlatformAppBar createAppBar(BuildContext context, int index) {
     return PlatformAppBar(
       title: Text(Bikemeter.appName),
-      leading: ControlPanelState.createButton(context, Icons.settings,
-          AppLocalizations.of(context).translate('settings'), 20, () {
-            Navigator.of(context).push(CupertinoPageRoute(builder: (context) => SettingsPage()));
-          }),
       trailingActions: [
         ControlPanel(),
       ],
     );
   }
+
   Widget createContent(BuildContext context, int index) {
     if (index == 0) {
       return SafeArea(
@@ -52,13 +53,18 @@ class TabScaffold extends StatelessWidget {
           child: Dashboard(),
         ),
       );
+    } else if (index == 1) {
+      return SafeArea(
+        child: Center(
+          child: Text('History Page'),
+        ),
+      );
     } else {
       return SafeArea(
         child: Center(
-          child: Text('Second Page'),
+          child: Text('Settings Page'),
         ),
       );
     }
   }
-
 }

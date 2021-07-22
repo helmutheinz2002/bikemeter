@@ -1,4 +1,5 @@
 import 'package:bikemeter/app_localizations.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'measure_controller.dart';
@@ -8,8 +9,9 @@ abstract class CellFormatter {
   final String upperLabel;
   final String lowerLabel;
   final String unit;
+  final IconData icon;
 
-  const CellFormatter(this.title, this.upperLabel, this.lowerLabel, this.unit);
+  const CellFormatter(this.title, this.upperLabel, this.lowerLabel, this.unit, this.icon);
 
   String pickAndFormat(
       BuildContext context, Measurement measurement, bool upper);
@@ -23,7 +25,7 @@ class CellFormatters {
 }
 
 class TimeCellFormatter extends CellFormatter {
-  const TimeCellFormatter() : super("time", "moving", "total", "h");
+  const TimeCellFormatter() : super("time", "moving", "total", "h", CupertinoIcons.clock);
 
   String formatDuration(Duration d) {
     return d.toString().split('.')[0];
@@ -36,7 +38,7 @@ class TimeCellFormatter extends CellFormatter {
 }
 
 class SpeedCellFormatter extends CellFormatter {
-  const SpeedCellFormatter() : super("speed", "average", "maximum", "km/h");
+  const SpeedCellFormatter() : super("speed", "average", "maximum", "km/h", CupertinoIcons.speedometer);
 
   @override
   String pickAndFormat(
@@ -46,7 +48,7 @@ class SpeedCellFormatter extends CellFormatter {
 }
 
 class ElevationCellFormatter extends CellFormatter {
-  const ElevationCellFormatter() : super("elevation", "current", "climb", "m");
+  const ElevationCellFormatter() : super("elevation", "current", "climb", "m", CupertinoIcons.arrow_up_arrow_down);
 
   @override
   String pickAndFormat(
@@ -56,7 +58,7 @@ class ElevationCellFormatter extends CellFormatter {
 }
 
 class DistanceCellFormatter extends CellFormatter {
-  const DistanceCellFormatter() : super("distance", "trip", "total", "km");
+  const DistanceCellFormatter() : super("distance", "trip", "total", "km", CupertinoIcons.placemark);
 
   @override
   String pickAndFormat(
